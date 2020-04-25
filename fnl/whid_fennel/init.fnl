@@ -1,4 +1,4 @@
-(module my-plugin.init
+(module whid-fennel.init
   {require {nvim aniseed.nvim}})
 
 (def win nil)
@@ -16,7 +16,7 @@
   (set buf (nvim.create_buf false true))
   (let [border-buf   (nvim.create_buf false true)
         _            (nvim.buf_set_option buf :bufhidden :wipe)
-        __           (nvim.buf_set_option buf :filetype :whid)
+        __           (nvim.buf_set_option buf :filetype :whid-fennel)
         width        (nvim.get_option :columns)
         height       (nvim.get_option :lines)
         win_height   (math.ceil (- (* height 0.8) 4))
@@ -60,9 +60,12 @@
   [buf]
   (let [mappings {:q "close_window()"}]
     (each [k v (pairs mappings)]
-      (nvim.buf_set_keymap buf "n" k (.. ":lua require(" "whid." v ")<cr>") {:nowait true :noremap true :silent true}))))
+      (nvim.buf_set_keymap buf "n" k (.. ":lua require\"whid_fennel\"." v "<cr>") {:nowait true :noremap true :silent true}))))
 
-(defn whid
+(defn whid_fennel
   []
   (-> (open-window)
       (set-mappings)))
+
+{:whid_fennel  whid_fennel
+ :close_window close_window}
